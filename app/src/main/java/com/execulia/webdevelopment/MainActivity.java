@@ -1,8 +1,10 @@
 package com.execulia.webdevelopment;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -17,9 +19,15 @@ import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.HashMap;
+
+public class MainActivity<webView> extends AppCompatActivity {
 
     String websiteURL = "https://www.execulia.com"; // sets web url
     private WebView webview;
@@ -27,11 +35,13 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseMessaging.getInstance().subscribeToTopic("notifications");
+
 
 
         if( ! CheckNetwork.isInternetAvailable(this)) //returns true if internet available
@@ -135,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+
 
 class CheckNetwork {
 
