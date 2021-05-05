@@ -14,9 +14,18 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.OnCompleteListener;
+import com.google.android.play.core.tasks.OnSuccessListener;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
@@ -27,6 +36,11 @@ public class MainActivity<webView> extends AppCompatActivity {
     SwipeRefreshLayout mySwipeRefreshLayout;
     private ProgressBar progressBar;
 
+    //Review Manager Start
+    ReviewManager manager;
+    ReviewInfo reviewInfo;
+    //Review Manager End
+
 
 
     @Override
@@ -34,6 +48,35 @@ public class MainActivity<webView> extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseMessaging.getInstance().subscribeToTopic("notifications");
+
+        //Review Manager Start
+
+        manager = ReviewManagerFactory.create(MainActivity.this);
+        Task<ReviewInfo> request = manager.requestReviewFlow();
+
+        request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
+            @Override
+            public void onComplete(@NonNull Task<ReviewInfo> task) {
+
+                if(task.isSuccessful()){
+                    reviewInfo = task.getResult();
+                    Task<Void> flow = manager.launchReviewFlow(MainActivity.this, reviewInfo);
+
+                    flow.addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void result) {
+
+                        }
+                    });
+                }else {
+                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+        //Review Manager End
 
 
 
