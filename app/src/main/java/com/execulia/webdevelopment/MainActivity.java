@@ -4,10 +4,12 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -57,6 +59,7 @@ public class MainActivity<webView> extends AppCompatActivity {
         request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
             @Override
             public void onComplete(@NonNull Task<ReviewInfo> task) {
+                
 
                 if(task.isSuccessful()){
                     reviewInfo = task.getResult();
@@ -80,23 +83,28 @@ public class MainActivity<webView> extends AppCompatActivity {
 
 
 
+
+
         if( ! CheckNetwork.isInternetAvailable(this)) //returns true if internet available
         {
             //if there is no internet do this
             setContentView(R.layout.activity_main);
             //Toast.makeText(this,"No Internet Connection, Chris",Toast.LENGTH_LONG).show();
 
+          //Added Connect when device is offline start
             new AlertDialog.Builder(this) //alert the person knowing they are about to close
                     .setTitle("No internet connection available")
                     .setMessage("Please Check you're Mobile data or Wifi network.")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity( new Intent(Settings.ACTION_WIFI_SETTINGS));
                             finish();
                         }
                     })
-                    //.setNegativeButton("No", null)
+//                   .setNegativeButton("No", null)
                     .show();
+            //Added Connect when device is offline End
 
         }
         else
@@ -129,6 +137,8 @@ public class MainActivity<webView> extends AppCompatActivity {
         progressBar.setMax(100);
 
     }
+
+
 
 
     private class WebViewClientDemo extends WebViewClient {
