@@ -230,7 +230,4 @@ class CheckNetwork {
 
         }
     }
-
-
-
 }
