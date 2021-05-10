@@ -1,6 +1,5 @@
 package com.execulia.webdevelopment;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,12 +39,12 @@ public class MainActivity<webView> extends AppCompatActivity {
     SwipeRefreshLayout mySwipeRefreshLayout;
     private ProgressBar progressBar;
 
-
-
     //Review Manager Start
     ReviewManager manager;
     ReviewInfo reviewInfo;
     //Review Manager End
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +52,7 @@ public class MainActivity<webView> extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         FirebaseMessaging.getInstance().subscribeToTopic("notifications");
 
-
         //Review Manager Start
-
         manager = ReviewManagerFactory.create(MainActivity.this);
         Task<ReviewInfo> request = manager.requestReviewFlow();
 
@@ -77,15 +74,9 @@ public class MainActivity<webView> extends AppCompatActivity {
                 }else {
                     Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }
-
             }
-
         });
-
-
         //Review Manager End
-
-
 
         if( ! CheckNetwork.isInternetAvailable(this)) //returns true if internet available
         {
@@ -145,6 +136,7 @@ public class MainActivity<webView> extends AppCompatActivity {
 
     private class WebViewClientDemo extends WebViewClient {
         @Override
+// URL Scheme Change Start
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.startsWith("market://")||url.startsWith("whatsapp://")||url.startsWith("tel:")||url.startsWith("mailto:"))
             {
@@ -158,6 +150,7 @@ public class MainActivity<webView> extends AppCompatActivity {
                 return true;
             }
         }
+// URL Scheme Change End
 
         @Override
         public void onPageFinished(WebView view, String url) {
@@ -172,11 +165,8 @@ public class MainActivity<webView> extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setProgress(0);
         }
-
-
-
-
     }
+
     
     private class WebChromeClientDemo extends WebChromeClient {
         public void onProgressChanged(WebView view, int progress) {
@@ -238,6 +228,4 @@ class CheckNetwork {
 
         }
     }
-
-
 }
