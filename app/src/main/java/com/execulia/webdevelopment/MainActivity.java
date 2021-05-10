@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -31,25 +32,27 @@ import com.google.android.play.core.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
-public class MainActivity<webView> extends AppCompatActivity {
 
+
+public class MainActivity<webView> extends AppCompatActivity {
     String websiteURL = "https://www.execulia.com"; // sets web url
     private WebView webview;
     SwipeRefreshLayout mySwipeRefreshLayout;
     private ProgressBar progressBar;
+
+
 
     //Review Manager Start
     ReviewManager manager;
     ReviewInfo reviewInfo;
     //Review Manager End
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseMessaging.getInstance().subscribeToTopic("notifications");
+
 
         //Review Manager Start
 
@@ -76,12 +79,11 @@ public class MainActivity<webView> extends AppCompatActivity {
                 }
 
             }
+
         });
 
 
         //Review Manager End
-
-
 
 
 
@@ -144,9 +146,19 @@ public class MainActivity<webView> extends AppCompatActivity {
     private class WebViewClientDemo extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
+            if (url.startsWith("market://")||url.startsWith("whatsapp://")||url.startsWith("tel:")||url.startsWith("mailto:"))
+            {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+                return true;
+            }
+            else{
+                view.loadUrl(url);
+                return true;
+            }
         }
+
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
@@ -161,7 +173,11 @@ public class MainActivity<webView> extends AppCompatActivity {
             progressBar.setProgress(0);
         }
 
+
+
+
     }
+    
     private class WebChromeClientDemo extends WebChromeClient {
         public void onProgressChanged(WebView view, int progress) {
             progressBar.setProgress(progress);
@@ -222,4 +238,6 @@ class CheckNetwork {
 
         }
     }
+
+
 }
