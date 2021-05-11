@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -34,7 +35,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class MainActivity<webView> extends AppCompatActivity {
-    String websiteURL = "https://www.execulia.com"; // sets web url
+    String websiteURL = "https://filesamples.com/formats/pdf"; // sets web url
     private WebView webview;
     SwipeRefreshLayout mySwipeRefreshLayout;
     private ProgressBar progressBar;
@@ -74,7 +75,18 @@ public class MainActivity<webView> extends AppCompatActivity {
                 }else {
                     Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }
+                //Download Manager Start
+                webview.setDownloadListener(new DownloadListener() {
+                    public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(url));
+                        startActivity (intent);
+                    }
+                });
+                //Download Manager End
+
             }
+
         });
         //Review Manager End
 
