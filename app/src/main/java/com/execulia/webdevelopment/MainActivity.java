@@ -35,7 +35,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class MainActivity<webView> extends AppCompatActivity {
-    String websiteURL = "https://filesamples.com/formats/pdf"; // sets web url
+    String websiteURL = "https://www.execulia.com"; // sets web url
     private WebView webview;
     SwipeRefreshLayout mySwipeRefreshLayout;
     private ProgressBar progressBar;
