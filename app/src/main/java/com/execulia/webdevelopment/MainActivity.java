@@ -47,6 +47,8 @@ public class MainActivity<webView> extends AppCompatActivity {
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +62,6 @@ public class MainActivity<webView> extends AppCompatActivity {
         request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
             @Override
             public void onComplete(@NonNull Task<ReviewInfo> task) {
-                
-
                 if(task.isSuccessful()){
                     reviewInfo = task.getResult();
                     Task<Void> flow = manager.launchReviewFlow(MainActivity.this, reviewInfo);
@@ -75,17 +75,10 @@ public class MainActivity<webView> extends AppCompatActivity {
                 }else {
                     Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }
-                //Download Manager Start
-                webview.setDownloadListener(new DownloadListener() {
-                    public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(url));
-                        startActivity (intent);
-                    }
-                });
-                //Download Manager End
+
 
             }
+
 
         });
         //Review Manager End
@@ -162,6 +155,7 @@ public class MainActivity<webView> extends AppCompatActivity {
                 return true;
             }
         }
+
 // URL Scheme Change End
 
         @Override
@@ -210,7 +204,6 @@ public class MainActivity<webView> extends AppCompatActivity {
 
 }
 
-
 class CheckNetwork {
 
     private static final String TAG = CheckNetwork.class.getSimpleName();
@@ -241,3 +234,4 @@ class CheckNetwork {
         }
     }
 }
+
