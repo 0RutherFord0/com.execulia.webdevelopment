@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -35,7 +34,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class MainActivity<webView> extends AppCompatActivity {
-    String websiteURL = "https://www.execulia.com"; // sets web url
+    String websiteURL = "http://www.execulia.com"; // sets web url
     private WebView webview;
     SwipeRefreshLayout mySwipeRefreshLayout;
     private ProgressBar progressBar;
@@ -44,10 +43,6 @@ public class MainActivity<webView> extends AppCompatActivity {
     ReviewManager manager;
     ReviewInfo reviewInfo;
     //Review Manager End
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +70,7 @@ public class MainActivity<webView> extends AppCompatActivity {
                 }else {
                     Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
-
-
         });
         //Review Manager End
 
@@ -136,27 +127,22 @@ public class MainActivity<webView> extends AppCompatActivity {
 
     }
 
-
-
-
     private class WebViewClientDemo extends WebViewClient {
         @Override
-// URL Scheme Change Start
+        // URL Scheme Change Start
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.startsWith("market://")||url.startsWith("whatsapp://")||url.startsWith("tel:")||url.startsWith("mailto:"))
+            if (url.startsWith("market://")||url.startsWith("vnd:youtube")||url.startsWith("whatsapp://")||url.startsWith("tel:")||url.startsWith("mailto:"))
             {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 startActivity(intent);
-                return true;
             }
             else{
                 view.loadUrl(url);
-                return true;
             }
+            return true;
         }
-
-// URL Scheme Change End
+        // URL Scheme Change End
 
         @Override
         public void onPageFinished(WebView view, String url) {
@@ -207,7 +193,6 @@ public class MainActivity<webView> extends AppCompatActivity {
 class CheckNetwork {
 
     private static final String TAG = CheckNetwork.class.getSimpleName();
-
     public static boolean isInternetAvailable(Context context)
     {
         NetworkInfo info = (NetworkInfo) ((ConnectivityManager)
@@ -223,13 +208,12 @@ class CheckNetwork {
             if(info.isConnected())
             {
                 Log.d(TAG," internet connection available...");
-                return true;
             }
             else
             {
                 Log.d(TAG," internet connection");
-                return true;
             }
+            return true;
 
         }
     }
