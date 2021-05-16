@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -44,10 +43,6 @@ public class MainActivity<webView> extends AppCompatActivity {
     ReviewManager manager;
     ReviewInfo reviewInfo;
     //Review Manager End
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
